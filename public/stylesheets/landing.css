@@ -1,0 +1,49 @@
+body{
+    color: #A9A9A9;	
+    background-color: #E8E8E8;
+}
+header{
+    color: #585858;
+    margin-bottom: 35px;
+    font-family: 'Exo 2', sans-serif;
+}
+.container-fluid{
+    text-align: center;
+    width: 90%;
+    margin: auto;
+    margin-top: 100px;
+}
+i{
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+.sport{
+    border-radius: 10px;
+    padding-top: 100px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-bottom: 100px;
+    transition: all 0.3s ease-out;
+}
+.sport:nth-child(1){
+    margin-left: 0px;
+}
+.sport:nth-child(4){
+    margin-right: 0px;
+}
+.sport:hover a{
+    text-decoration: none;
+    color: #585858
+}
+a{
+    text-decoration: none;
+    color: #A9A9A9;
+    transition: all 0.3s ease-in;
+}
+.sport:hover{
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #585858;
+    background-color: rgba(0,0,0,0.1);
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
