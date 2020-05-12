@@ -4,7 +4,6 @@ var toggleBtn = document.querySelector(".sidebar-toggler");
 
 toggleBtn.addEventListener("click", function(){
     sidebar.classList.toggle("sidebar-toggled");
-    contentsection.classList.toggle("sidebar-toggled");
 });
 
 var leagueNavs = document.querySelectorAll("#sidebar .nav-link");
