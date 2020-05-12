@@ -30,7 +30,7 @@ const searchStates = async searchText => {
 const outputHtml = teams => {
     if(teams.length > 0){
         const html = teams.map(team => `
-            <a href="/">
+            <a href="/nfl/feed/a/${team.teamName}">
             <div class="searchResult pl-4 py-2">
                 <p>${team.city} ${team.name}</p>
             </div></a>
