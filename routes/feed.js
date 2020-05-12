@@ -26,7 +26,6 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
                 res.render("feed/articlefeed", {sport: req.params.sport, team: req.params.team, brArticles: br.articles, espnArticles: espn.articles});
             }else if (req.params.type.toLowerCase() === "v"){
                 var espn = await getESPNVideos(teamName);
-                console.log(espn.results[0].contents);
                 res.render("feed/videofeed", {sport: req.params.sport, team: req.params.team, espnVideos: espn.results[0].contents});
             }else{
                 res.redirect("/error");
