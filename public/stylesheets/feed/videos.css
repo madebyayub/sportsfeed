@@ -1,0 +1,39 @@
+.img-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+  
+.img-container img {
+    width: 100%;
+    height: auto;
+}
+  
+.img-container .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: transparent;
+    color: white;
+    font-size: 4rem;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+  
+#contentSection .play-btn:hover {
+    color: rgba(255,255,255,0.6);
+}
+
+#contentSection .play-btn{
+    color: rgba(255,255,255,0.35);
+    padding-left: 40%;
+    padding-right:40%;
+    padding-top:40%;
+    padding-bottom:40%;
+}

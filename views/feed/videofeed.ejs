@@ -1,5 +1,6 @@
 <%- include("../partials/header") %>
 <link rel="stylesheet" href="/stylesheets/feed.css">
+<link rel="stylesheet" href="/stylesheets/feed/videos.css">
 <title>Sportsfeed</title>
 </head>
 <body>
@@ -40,7 +41,7 @@
                         <div class="team-list nba-team-list">
                         <% } %>
                             <ul class="nav flex-column">
-                                <li class="league-list-item pl-4">League</li>
+                                <a href="/nba/feed/a/nba"><li class="league-list-item pl-4">League</li></a>
                                 <a href="/nba/search"><li class="league-list-item pl-4">Search for a team</li></a>
                             </ul>
                         </div>
@@ -104,10 +105,10 @@
             <div id="contentSection" class="contents container-fluid col-10 mt-4 sidebar-toggled">
                 <div id="filter-row" class="row mt-5 mx-3 justify-content-between align-items-center">
                     <div class="filters">
-                        <button type="button" class="btn btn-light filter-btn set btn-md mr-3">Articles</button>
-                        <button type="button" class="btn btn-light filter-btn btn-md">Videos</button>
+                        <a href="/nba/feed/a/<%= team %>" class="btn btn-light filter-btn btn-md mr-3">Articles</a>
+                        <a class="btn set btn-light filter-btn btn-md">Videos</a>
                     </div>
-                    <div class="team-name mr-5"><h1><%= team %></h1></div>
+                    <div class="team-name mr-5"><h1>Video Feed For <%= team %></h1></div>
                     <div id="resultsFor">
                         <span>CHANGE TEAM</span>
                     </div>
@@ -118,20 +119,22 @@
                             <img class="brand" src="https://a.espncdn.com/wireless/mw5/r1/images/bookmark-icons-v2/espn-icon-180x180.png" alt="">
                             <h4><em>ESPN</em></h4>
                         </div>
-                        <% for (var i = 0; i < espnArticles.length; i+=4) { %>
-                            <% if (espnArticles.length - i <= 4) { %>
+                        <% for (var i = 0; i < espnVideos.length; i+=4) { %>
+                            <% if (espnVideos.length - i <= 4) { %>
                             <div class="row espn row-result-contents mt-3 mb-5 justify-content-start hide">
                             <% }else{ %>
                             <div class="row espn row-result-contents mt-3 justify-content-between hide">
                             <% } %>
-                                <% for (var j = i; j < i+4 && j < espnArticles.length; j++) { %>
+                                <% for (var j = i; j < i+4 && j < espnVideos.length; j++) { %>
                                     <div class="col-3">
-                                        <a href="<%= espnArticles[j].url %>">
+                                        <a href="<%= espnVideos[j].link.web%>">
                                         <div class="card">
-                                            <img src="<%= espnArticles[j].urlToImage %>" class="card-img-top" alt="">
+                                            <div class="img-container">
+                                                <img src="<%= espnVideos[j].image.default %>" class="card-img-top" alt="">
+                                                <a href="<%= espnVideos[j].link.web %>" class="btn play-btn"><i class="far fa-play-circle"></i></a>
+                                            </div>
                                             <div class="card-body">
-                                                <h5 class="card-title"><a href="<%= espnArticles[j].url %>"><%= espnArticles[j].title.substring(0,30) %>...</a></h5>
-                                              <p class="card-text"><%= espnArticles[j].description.substring(0,75) %>...</p>
+                                                <h5 class="card-title"><a href="<%= espnVideos[j].link.web %>"><%= espnVideos[j].displayName.substring(0,75) %>...</a></h5>
                                             </div>
                                         </div></a>
                                     </div>
@@ -141,34 +144,6 @@
                         <div class="row espn show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
                     </div>
                     <hr>
-                    <div id="brResults" class="container-fluid">
-                        <div class="row result-header align-items-center w-100 mb-3">
-                            <img class="brand" src="https://bleacherreport.com/img/favicon/appleTouchIcon.png" alt="">
-                            <h4><em>Bleacher Report</em></h4>
-                        </div>
-                        <% for (var i = 0; i < brArticles.length; i+=4) { %>
-                            <% if (brArticles.length - i <= 4) { %>
-                            <div class="row br row-result-contents mt-3 mb-5 justify-content-start hide">
-                            <% }else{ %>
-                            <div class="row br row-result-contents mt-3 justify-content-between hide">
-                            <% } %>
-                                <% for (var j = i; j < i+4 && j < brArticles.length; j++) { %>
-                                    <div class="col-3">
-                                        <a href="<%= brArticles[j].url %>">
-                                        <div class="card">
-                                            <img src="<%= brArticles[j].urlToImage %>" class="card-img-top" alt="">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><a href="<%= brArticles[j].url %>"><%= brArticles[j].title.substring(0,50) %>...</a></h5>
-                                              <p class="card-text"><%= brArticles[j].description.substring(0,90) %>...</p>
-                                            </div>
-                                        </div></a>
-                                    </div>
-                                <% } %>
-                            </div>
-                        <% } %>
-                        <div class="row br show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
-                    </div>
-                </div>
                 <hr>
             </div>
         </div>
