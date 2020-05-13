@@ -22,11 +22,18 @@
             <div id="match-list"></div>
         </form>
     </div>
-    <div class="row justify-content-around">
+    <div class="row justify-content-between">
+        <% if (!(currentUser)){ %>
         <div></div>
         <a href="/">Change Sport</a>
         <a href="/login">Already have team saved? Login here.</a>
         <div></div>
+        <% }else{ %>
+        <div></div>
+        <a class="pr-5" href="/">Change Sport</a>
+        <a class="pl-5" href="/user/feed">My Feed</a>
+        <div></div>
+        <% } %>
     </div>
 </div>
 

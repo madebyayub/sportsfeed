@@ -1,0 +1,32 @@
+<%- include("./header") %>
+        <link rel="stylesheet" href="/stylesheets/feed/feed.css">
+        <link rel="stylesheet" href="/stylesheets/feed/sidebar.css">
+        <link rel="stylesheet" href="/stylesheets/feed/content.css">
+
+        <title>Sportsfeed</title>
+    </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <button class="sidebar-toggler mr-3" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/">Sportsfeed</a>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarText">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user/a/feed">My Feed</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <ul class="nav navbar-nav">
+                    <% if (!(currentUser)){ %>
+                        <li class="mx-3"><a href="/login">Login</a></li>
+                        <li class="mx-3"><a href="/register">Signup</a></li>    
+                    <% }else{ %>
+                        <li class="mx-3"><a><strong><%= currentUser.username %></strong></a></li>
+                        <li class="mx-3"><a href="/logout">Logout</a></li>
+                    <% } %>
+                </ul>
+            </span>
+        </div>
+    </nav>

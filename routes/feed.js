@@ -16,31 +16,41 @@ var nba = [
 var channelIDs = {
     espn: "UCiWLfSweyRNmLpgEHekhoAg",
     nba: "UCWJ2lWNubArHWmf3FIHbfcQ",
-    undisputed: "UCLXzq85ijg2LwJWFrz4pkmw"
+    undisputed: "UCLXzq85ijg2LwJWFrz4pkmw",
+    br: "UC9-OpMMVoNP5o10_Iyq7Ndw"
 };
 
 router.get("/:sport/feed/:type/:team", async function(req, res){
-    if (["NFL", "NHL", "NBA", "MLB"].indexOf(req.params.sport.toUpperCase()) >= 0){
+    if (["nfl", "nhl", "nba", "mlb"].indexOf(req.params.sport.toLowerCase()) >= 0){
         if (containsIn(req.params.sport, req.params.team)){
-            // get articles from LEAGUE SITE, ESPN, BLEACHERREPORT, YAHOO SPORTS!
+            var sport = req.params.sport.toLowerCase();
             var teamNames = req.params.team.split(" ");
             var teamName = "";
             teamNames.forEach(name => teamName = teamName + "+" + name + " ");
-            if (req.params.type.toLowerCase() === "a"){
-                var espn = await getArticles("espn", "espn.com", teamName);
-                var br = await getArticles("bleacher-report", "bleacherreport.com", teamName);
-                var fox = await getArticles("fox-sports", "foxsports.com", teamName);
-                res.render("feed/articlefeed", {sport: req.params.sport, team: req.params.team, 
-                    brArticles: br.articles, espnArticles: espn.articles, 
-                    foxArticles: fox.articles, cbcArticles: null});
-            }else if (req.params.type.toLowerCase() === "v"){
-                var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkey);
-                var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkey);
-                var nba = await getVideos(teamName, channelIDs.nba, "nba.com", APIkey);
-                res.render("feed/videofeed", {sport: req.params.sport, team: req.params.team, 
-                    espnVideos: espn.items, undisputedVideos: undisputed.items, nbaVideos: nba.items});
+            if (sport === "nba"){
+                if (req.params.type.toLowerCase() === "a"){
+                    var espn = await getArticles("espn", "espn.com", teamName);
+                    var br = await getArticles("bleacher-report", "bleacherreport.com", teamName);
+                    var fox = await getArticles("fox-sports", "foxsports.com", teamName);
+                    res.render("feed/articles/nba", {sport: req.params.sport, team: req.params.team, 
+                        brArticles: br.articles, espnArticles: espn.articles, 
+                        foxArticles: fox.articles, cbcArticles: null});
+                }else if (req.params.type.toLowerCase() === "v"){
+                    var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkey);
+                    var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkey);
+                    var nba = await getVideos(teamName, channelIDs.nba, "nba.com", APIkey);
+                    var br = await getVideos(teamName, channelIDs.br, "bleacherreport", APIkey)
+                    res.render("feed/videos/nba", {sport: req.params.sport, team: req.params.team, 
+                        espnVideos: espn.items, undisputedVideos: undisputed.items, nbaVideos: nba.items, brVideos: br.items});
+                }else{
+                    res.redirect("/error");
+                }
+            }else if(sport === "nfl"){
+
+            }else if(sport === "nhl"){
+
             }else{
-                res.redirect("/error");
+
             }
         }else{
             res.redirect("/error");
@@ -50,7 +60,7 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
     }
 });
 
-router.get("/user/feed", middleWare.isLoggedIn, function(req, res){
+router.get("/user/:type/feed", middleWare.isLoggedIn, function(req, res){
     res.send("feed page");
 });
 
