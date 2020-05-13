@@ -28,3 +28,13 @@ $('.show-more.fox').on('click', function(){
         $('.show-more.fox').slice(0,1).addClass('hide');
     }
 });
+$('.nba.row-result-contents').slice(0,2).removeClass('hide');
+$('.show-more.nba').on('click', function(){
+    var row = $('.nba.row-result-contents:hidden').slice(0,1);
+    row.slideDown();
+    row.css('display', 'flex');
+    var remaining = $('.nba.row-result-contents:hidden').slice(0,1);
+    if(remaining.length === 0){
+        $('.show-more.nba').slice(0,1).addClass('hide');
+    }
+});

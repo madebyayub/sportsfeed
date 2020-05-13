@@ -176,6 +176,37 @@
                             </div>
                         <% } %>
                         <div class="row fox show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
+                    <hr>
+                <% if (sport.toLowerCase() == "nba") { %>    
+                    <div id="nbaResults" class="container-fluid">
+                        <div class="row result-header align-items-center w-100 mb-3">
+                            <img class="brand" src="https://b.fssta.com/sta/images/navSection/images/shows/nav_shows_undisputed.vadapt.160.high.0.png" alt="">
+                            <h4><em>NBA</em></h4>
+                        </div>
+                        <% for (var i = 0; i < nbaVideos.length; i+=4) { %>
+                            <% if (nbaVideos.length - i <= 4) { %>
+                            <div class="row nba row-result-contents mt-3 mb-5 justify-content-start hide">
+                            <% }else{ %>
+                            <div class="row nba row-result-contents mt-3 justify-content-between hide">
+                            <% } %>
+                                <% for (var j = i; j < i+4 && j < nbaVideos.length; j++) { %>
+                                    <div class="col-3">
+                                        <a href="http://youtube.com/watch?v=<%= nbaVideos[j].id.videoId%>">
+                                        <div class="card">
+                                            <div class="img-container">
+                                                <img src="<%= nbaVideos[j].snippet.thumbnails.medium.url %>" class="card-img-top" alt="">
+                                                <a href="http://youtube.com/watch?v=<%= nbaVideos[j].id.videoId%>" class="btn play-btn"><i class="far fa-play-circle"></i></a>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title"><a href="http://youtube.com/watch?v=<%= nbaVideos[j].id.videoId%>"><%= nbaVideos[j].snippet.title.split("&#39;").join("'") %>...</a></h5>
+                                            </div>
+                                        </div></a>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } %>
+                        <div class="row nba show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
+                <% } %>
                 </div>
                 <hr>
             </div>

@@ -34,8 +34,9 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
             }else if (req.params.type.toLowerCase() === "v"){
                 var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkey);
                 var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkey);
+                var nba = await getVideos(teamName, channelIDs.nba, "nba.com", APIkey);
                 res.render("feed/videofeed", {sport: req.params.sport, team: req.params.team, 
-                    espnVideos: espn.items, undisputedVideos: undisputed.items});
+                    espnVideos: espn.items, undisputedVideos: undisputed.items, nbaVideos: nba.items});
             }else{
                 res.redirect("/error");
             }
