@@ -1,8 +1,7 @@
 var express = require("express"),
     router = express.Router(),
     request = require("request");
-
-
+var APIkey = "AIzaSyBMti91-v5LJmH4_l4LWQTavnp8Td2WS88";
 var nba = [
     "atlanta hawks", "boston Celtics", "brooklyn nets", "charlotte hornets",
     "chicago bulls", "cleveland cavaliers", "dallas mavericks", "denver nuggets",
@@ -12,6 +11,11 @@ var nba = [
     "oklahoma city thunder","orlando magic","philadelphia 76ers","phoenix suns","portland trail blazers",
     "sacramento kings","san antonio spurs","toronto raptors","utah jazz","washington wizards", "nba"
 ]
+var channelIDs = {
+    espn: "UCiWLfSweyRNmLpgEHekhoAg",
+    nba: "UCWJ2lWNubArHWmf3FIHbfcQ",
+    undisputed: "UCLXzq85ijg2LwJWFrz4pkmw"
+};
 
 router.get("/:sport/feed/:type/:team", async function(req, res){
     if (["NFL", "NHL", "NBA", "MLB"].indexOf(req.params.sport.toUpperCase()) >= 0){
@@ -21,12 +25,17 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
             var teamName = "";
             teamNames.forEach(name => teamName = teamName + "+" + name + " ");
             if (req.params.type.toLowerCase() === "a"){
-                var espn = await getESPNArticles(teamName);
-                var br = await getBRArticles(teamName);
-                res.render("feed/articlefeed", {sport: req.params.sport, team: req.params.team, brArticles: br.articles, espnArticles: espn.articles});
+                var espn = await getArticles("espn", "espn.com", teamName);
+                var br = await getArticles("bleacher-report", "bleacherreport.com", teamName);
+                var fox = await getArticles("fox-sports", "foxsports.com", teamName);
+                res.render("feed/articlefeed", {sport: req.params.sport, team: req.params.team, 
+                    brArticles: br.articles, espnArticles: espn.articles, 
+                    foxArticles: fox.articles, cbcArticles: null});
             }else if (req.params.type.toLowerCase() === "v"){
-                var espn = await getESPNVideos(teamName);
-                res.render("feed/videofeed", {sport: req.params.sport, team: req.params.team, espnVideos: espn.results[0].contents});
+                var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkey);
+                var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkey);
+                res.render("feed/videofeed", {sport: req.params.sport, team: req.params.team, 
+                    espnVideos: espn.items, undisputedVideos: undisputed.items});
             }else{
                 res.redirect("/error");
             }
@@ -38,41 +47,26 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
     }
 });
 
-function getESPNVideos(teamName){
+function getVideos(teamName, channelID, channel, APIkey){
     return new Promise((resolve, reject) => {
-        request("https://site.web.api.espn.com/apis/search/v2"+
-                "?region=us&lang=en&limit=50&page=1&type=clips"+
-                "&iapPackages=ESPN_PLUS%2CESPN_PLUS_MLB%2CESPN_PLUS_UFC_PPV_249"+
-                "&dtciVideoSearch=true&query=" + teamName, function(error, response, body){
-                if(!error && response.statusCode == 200){
-                    parsedBody = JSON.parse(body);
-                    return resolve(parsedBody);
-                }else{
-                    return reject(null);
-                }
+        request("https://www.googleapis.com/youtube/v3/search?"+
+                "part=snippet&type=video&key="+APIkey+"&channelId="+channelID+
+                "&maxResults=50&order=relevance&q="+channel+" "+teamName, 
+                function(error, response, body){
+                    if(!error && response.statusCode == 200){
+                        parsedBody = JSON.parse(body);
+                        return resolve(parsedBody);
+                    }else{
+                        return reject(null);
+                    }
         });
     });
 }
 
-function getESPNArticles(teamName){
+function getArticles(source, domain, teamName){
     return new Promise((resolve, reject) => {
         request("https://newsapi.org/v2/everything?q="+teamName+
-                "&sources=espn&domains=espn.com"+
-                "&apiKey=a02d4676a3394acebe3f2ca3a4d073e3", function(error, response, body){
-                if(!error && response.statusCode == 200){
-                    parsedBody = JSON.parse(body);
-                    return resolve(parsedBody);
-                }else{
-                    return reject(null);
-                }
-        });
-    });
-}
-
-function getBRArticles(teamName){
-    return new Promise((resolve, reject) => {
-        request("https://newsapi.org/v2/everything?q="+teamName+
-                "&sources=bleacher-report&domains=bleacherreport.com"+
+                "&sources="+source+"&domains="+domain+
                 "&apiKey=a02d4676a3394acebe3f2ca3a4d073e3", function(error, response, body){
                 if(!error && response.statusCode == 200){
                     parsedBody = JSON.parse(body);

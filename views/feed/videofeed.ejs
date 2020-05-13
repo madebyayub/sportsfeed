@@ -111,11 +111,12 @@
                 <div id="result-section" class="mt-3 px-5 pt-3">
                     <div id="filter-row" class="row mb-4 justify-content-between align-items-center">
                         <div class="filters">
+                            <a class="btn set btn-light filter-btn btn-md mr-3">Videos</a>
                             <a href="/nba/feed/a/<%= team %>" class="btn btn-light filter-btn btn-md mr-3">Articles</a>
-                            <a class="btn set btn-light filter-btn btn-md">Videos</a>
+
                         </div>
                         <div id="follow" class="mr-4">
-                            <button type="button" class="btn btn-outline px-3"><i class="far fa-heart mr-2"></i>Followed</button>
+                            <button type="button" class="btn followed px-3"><i class="fas fa-check mr-2"></i>Followed</button>
                         </div>
                     </div>
                     <div id="espnResults" class="container-fluid">
@@ -131,14 +132,14 @@
                             <% } %>
                                 <% for (var j = i; j < i+4 && j < espnVideos.length; j++) { %>
                                     <div class="col-3">
-                                        <a href="<%= espnVideos[j].link.web%>">
+                                        <a href="http://youtube.com/watch?v=<%= espnVideos[j].id.videoId%>">
                                         <div class="card">
                                             <div class="img-container">
-                                                <img src="<%= espnVideos[j].image.default %>" class="card-img-top" alt="">
-                                                <a href="<%= espnVideos[j].link.web %>" class="btn play-btn"><i class="far fa-play-circle"></i></a>
+                                                <img src="<%= espnVideos[j].snippet.thumbnails.medium.url %>" class="card-img-top" alt="">
+                                                <a href="http://youtube.com/watch?v=<%= espnVideos[j].id.videoId%>" class="btn play-btn"><i class="far fa-play-circle"></i></a>
                                             </div>
                                             <div class="card-body">
-                                                <h5 class="card-title"><a href="<%= espnVideos[j].link.web %>"><%= espnVideos[j].displayName.substring(0,75) %>...</a></h5>
+                                                <h5 class="card-title"><a href="http://youtube.com/watch?v=<%= espnVideos[j].id.videoId%>"><%= espnVideos[j].snippet.title.split("&#39;").join("'") %>...</a></h5>
                                             </div>
                                         </div></a>
                                     </div>
@@ -146,8 +147,36 @@
                             </div>
                         <% } %>
                         <div class="row espn show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
-                    </div>
                     <hr>
+                    <div id="foxResults" class="container-fluid">
+                        <div class="row result-header align-items-center w-100 mb-3">
+                            <img class="brand" src="https://b.fssta.com/sta/images/navSection/images/shows/nav_shows_undisputed.vadapt.160.high.0.png" alt="">
+                            <h4><em>Undisputed</em></h4>
+                        </div>
+                        <% for (var i = 0; i < undisputedVideos.length; i+=4) { %>
+                            <% if (undisputedVideos.length - i <= 4) { %>
+                            <div class="row fox row-result-contents mt-3 mb-5 justify-content-start hide">
+                            <% }else{ %>
+                            <div class="row fox row-result-contents mt-3 justify-content-between hide">
+                            <% } %>
+                                <% for (var j = i; j < i+4 && j < undisputedVideos.length; j++) { %>
+                                    <div class="col-3">
+                                        <a href="http://youtube.com/watch?v=<%= undisputedVideos[j].id.videoId%>">
+                                        <div class="card">
+                                            <div class="img-container">
+                                                <img src="<%= undisputedVideos[j].snippet.thumbnails.medium.url %>" class="card-img-top" alt="">
+                                                <a href="http://youtube.com/watch?v=<%= undisputedVideos[j].id.videoId%>" class="btn play-btn"><i class="far fa-play-circle"></i></a>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title"><a href="http://youtube.com/watch?v=<%= undisputedVideos[j].id.videoId%>"><%= undisputedVideos[j].snippet.title.split("&#39;").join("'") %>...</a></h5>
+                                            </div>
+                                        </div></a>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } %>
+                        <div class="row fox show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
+                </div>
                 <hr>
             </div>
         </div>
