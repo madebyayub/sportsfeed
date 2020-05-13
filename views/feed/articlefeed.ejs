@@ -1,5 +1,5 @@
 <%- include("../partials/header") %>
-<link rel="stylesheet" href="/stylesheets/feed.css">
+<link rel="stylesheet" href="/stylesheets/feed/feed.css">
 <link rel="stylesheet" href="/stylesheets/feed/sidebar.css">
 <link rel="stylesheet" href="/stylesheets/feed/content.css">
 
@@ -14,11 +14,19 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarText">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">My Feed</a>
+                    <a class="nav-link" href="/user/feed">My Feed</a>
                 </li>
             </ul>
             <span class="navbar-text">
-                user
+                <ul class="nav navbar-nav">
+                    <% if (!(currentUser)){ %>
+                        <li class="mx-3"><a href="/login">Login</a></li>
+                        <li class="mx-3"><a href="/register">Signup</a></li>    
+                    <% }else{ %>
+                        <li class="mx-3"><a><strong><%= currentUser.username %></strong></a></li>
+                        <li class="mx-3"><a href="/logout">Logout</a></li>
+                    <% } %>
+                </ul>
             </span>
         </div>
     </nav>

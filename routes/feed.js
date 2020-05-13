@@ -1,6 +1,8 @@
 var express = require("express"),
     router = express.Router(),
-    request = require("request");
+    request = require("request"),
+    middleWare = require("../middleware");
+
 var APIkey = "AIzaSyBMti91-v5LJmH4_l4LWQTavnp8Td2WS88";
 var nba = [
     "atlanta hawks", "boston Celtics", "brooklyn nets", "charlotte hornets",
@@ -46,6 +48,10 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
     }else{
         res.redirect("/error");
     }
+});
+
+router.get("/user/feed", middleWare.isLoggedIn, function(req, res){
+    res.send("feed page");
 });
 
 function getVideos(teamName, channelID, channel, APIkey){
