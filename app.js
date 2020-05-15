@@ -56,6 +56,6 @@ app.get("/error", function(req, res){
 app.get("*", function(req,res){
 res.render("error")
 });
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log("Sportfeed server initiated...")
 });
