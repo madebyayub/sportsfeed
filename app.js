@@ -14,7 +14,7 @@ var express = require("express"),
     App configuration 
 */
 
-mongoose.connect("mongodb://localhost/sportsfeedapp", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/sportsfeedapp", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 app.use(require("express-session")({
     secret: "IS THIS THE DAGGER?! OHHH",
     resave: false,
