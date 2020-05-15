@@ -29,3 +29,25 @@ section{
 #resultsFor{
     color: #585858;
 }
+#contentSection .follow-results{
+    box-shadow: 0 0 18px rgba(0,0,0,0.5);
+    border-radius: 20px;
+}
+#contentSection .follow-result-item{
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    border-radius: 20px;
+}
+#contentSection .no-follower-message{
+    color: grey;
+}
+::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track{
+    background: rgba(0,0,0,0.25);
+}
+::-webkit-scrollbar-thumb{
+    background: rgba(0,0,0,0.5);
+}

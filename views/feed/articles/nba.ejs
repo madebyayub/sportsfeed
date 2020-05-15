@@ -84,7 +84,8 @@
             </div>
             <div id="contentSection" class="contents container-fluid col-10 mt-4">
                 <div id="header-row" class="row mt-5 mx-3 justify-content-start align-items-center">
-                    <div class="team-name"><h3><%= sport.toLowerCase() %> / <strong><%= team.toLowerCase() %></strong></h3></div>
+                    <div class="team-name"><h5><strong><%= sport.toLowerCase() %>  /</strong></h5></div>
+                    <div class="team-name"><h3><em><%= team.toLowerCase() %></em></h3></div>
                 </div>
                 <div id="result-section" class="mt-3 px-5 pt-3">
                     <div id="filter-row" class="row mb-4 justify-content-between align-items-center">
@@ -92,8 +93,19 @@
                             <a href="/nba/feed/v/<%= team %>"class="btn btn-light filter-btn btn-md mr-3">Videos</a>
                             <a class="btn btn-light filter-btn set btn-md">Articles</a>
                         </div>
-                        <div id="follow" class="mr-4">
-                            <a class="btn followed px-3"><i class="fas fa-check mr-2"></i>Followed</a>
+                        <div id="follow-section" class="mr-4">
+                            <% if (currentUser) { %>
+                                <% for (var i = 0; i < currentUser.followed.length; i++) { %>
+                                    <% if (currentUser.followed[i].teamname.toLowerCase() == team.toLowerCase()){ %>
+                                        <a id="follow" href="/<%=sport%>/<%=team%>/unfollow?_method=PUT" class="btn followed px-3" aria-label="<%= sport %>-<%= team %>"><i class="fas fa-check mr-2"></i>Followed</a>
+                                        <% break; %>
+                                    <% }else if (i == currentUser.followed.length - 1) { %>
+                                        <a id="follow" href="/<%=sport%>/<%=team%>/follow?_method=PUT" class="btn px-3" aria-label="<%= sport %>-<%= team %>">Follow</a>
+                                    <% } %>
+                                <% } %>
+                            <% }else{ %>
+                                <a id="follow" href="/<%=sport%>/<%=team%>/follow?_method=PUT" class="btn px-3" aria-label="<%= sport %>-<%= team %>">Follow</a>
+                            <% } %>
                         </div>
                     </div>
                     <div id="brResults" class="container-fluid">

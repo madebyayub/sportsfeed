@@ -3,7 +3,8 @@ var express = require("express"),
     request = require("request"),
     middleWare = require("../middleware");
 
-var APIkey = "AIzaSyBMti91-v5LJmH4_l4LWQTavnp8Td2WS88";
+
+var APIkeys = ["AIzaSyBMti91-v5LJmH4_l4LWQTavnp8Td2WS88", "AIzaSyCNnBq_3ON2s50n0b5Wf8ugoeD_323HWx8"];
 var nba = [
     "atlanta hawks", "boston Celtics", "brooklyn nets", "charlotte hornets",
     "chicago bulls", "cleveland cavaliers", "dallas mavericks", "denver nuggets",
@@ -36,10 +37,30 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
                         brArticles: br.articles, espnArticles: espn.articles, 
                         foxArticles: fox.articles, cbcArticles: null});
                 }else if (req.params.type.toLowerCase() === "v"){
-                    var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkey);
-                    var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkey);
-                    var nba = await getVideos(teamName, channelIDs.nba, "nba.com", APIkey);
-                    var br = await getVideos(teamName, channelIDs.br, "bleacherreport", APIkey)
+                    // ESPN YOUTUBE QUERY FETCH
+                    try{
+                        var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkeys[1]);
+                    }catch{
+                        var espn = await getVideos(teamName, channelIDs.espn, "espn", APIkeys[0]);
+                    }
+                    // UNDISPUTED
+                    try{
+                        var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkeys[1]);
+                    }catch{
+                        var undisputed = await getVideos(teamName, channelIDs.undisputed, "undisputed", APIkeys[0]);
+                    }
+                    // NBA
+                    try{
+                        var nba = await getVideos(teamName, channelIDs.nba, "nba.com", APIkeys[1]);
+                    }catch{
+                        var nba = await getVideos(teamName, channelIDs.nba, "nba.com", APIkeys[0]);
+                    }
+                    // BLEACHERREPORT
+                    try{
+                        var br = await getVideos(teamName, channelIDs.br, "bleacherreport", APIkeys[1])
+                    }catch{
+                        var br = await getVideos(teamName, channelIDs.br, "bleacherreport", APIkeys[0])
+                    }
                     res.render("feed/videos/nba", {sport: req.params.sport, team: req.params.team, 
                         espnVideos: espn.items, undisputedVideos: undisputed.items, nbaVideos: nba.items, brVideos: br.items});
                 }else{
@@ -60,8 +81,38 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
     }
 });
 
-router.get("/user/:type/feed", middleWare.isLoggedIn, function(req, res){
-    res.send("feed page");
+router.get("/user/:type/feed", middleWare.isLoggedIn, async function(req, res){
+    if (req.params.type.toLowerCase() === "a"){
+        var follow_feed = [];
+        var results;
+        for (var i = 0; i < req.user.followed.length; i++){
+            var article = {label: req.user.followed[i].sport + " / " + req.user.followed[i].teamname, articles: []};
+            if (req.user.followed[i].sport.toLowerCase() === "nba"){
+                results = await getArticles("espn, bleacher-report", "espn.com, bleacherreport.com", req.user.followed[i].teamname);
+                article.articles = results.articles;
+                follow_feed.push(article)
+            }
+        }
+        //console.log(follow_feed[0].articles);
+        res.render("feed/user/article", {sport: "feed", result: follow_feed});
+    }else if(req.params.type.toLowerCase() === "v"){
+        var follow_feed = [];
+        var results;
+        for (var i = 0; i < req.user.followed.length; i++){
+            var video = {label: req.user.followed[i].sport + " / " + req.user.followed[i].teamname, videos: []};
+            try{
+                results = await getAllVideos(req.user.followed[i].teamname, APIkeys[0]);
+            }catch{
+                results = await getAllVideos(req.user.followed[i].teamname, APIkeys[1]);
+            }
+            video.videos = results.items;
+            follow_feed.push(video);
+        }
+        res.render("feed/user/video", {sport: "feed", result: follow_feed});
+    }else{
+        res.redirect("/error");
+    }
+
 });
 
 function getVideos(teamName, channelID, channel, APIkey){
@@ -69,6 +120,22 @@ function getVideos(teamName, channelID, channel, APIkey){
         request("https://www.googleapis.com/youtube/v3/search?"+
                 "part=snippet&type=video&key="+APIkey+"&channelId="+channelID+
                 "&maxResults=50&order=relevance&q="+channel+" "+teamName, 
+                function(error, response, body){
+                    if(!error && response.statusCode == 200){
+                        parsedBody = JSON.parse(body);
+                        return resolve(parsedBody);
+                    }else{
+                        return reject(null);
+                    }
+        });
+    });
+}
+
+function getAllVideos(teamName, APIkey){
+    return new Promise((resolve, reject) => {
+        request("https://www.googleapis.com/youtube/v3/search?"+
+                "part=snippet&type=video&key="+APIkey+
+                "&maxResults=50&order=relevance&q="+teamName, 
                 function(error, response, body){
                     if(!error && response.statusCode == 200){
                         parsedBody = JSON.parse(body);
