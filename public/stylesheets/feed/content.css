@@ -89,9 +89,11 @@ p.card-text{
 }
 .row-result-contents{
     display:flex;
+    opacity: 1;
 }
 .row-result-contents.hide{
     display:none;
+    opacity: 0;
 }
 .show-more.hide{
     display:none;

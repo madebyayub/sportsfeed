@@ -8,9 +8,8 @@ var rows = $('.result-row');
 for (let i = 0; i < rows.length; i++){
     $('.resultrow'+i).slice(0,2).removeClass('hide');
     $('#show-resultrow'+i).on('click', function(){
-        console.log(i);
-        var row = $('.resultrow' + i + '.row-result-contents:hidden').slice(0,1).slideDown();
-        row.slideDown();
+        var row = $('.resultrow' + i + '.row-result-contents:hidden').slice(0,1);
+        row.toggleClass("hide");
         row.css('display', 'flex');
         var remaining = $('.resultrow' + i + '.row-result-contents:hidden').slice(0,1);
         if(remaining.length === 0){
