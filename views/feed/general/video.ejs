@@ -1,0 +1,150 @@
+<%- include("../../partials/videofeedheader") %>
+    <section class="container-fluid mr-2">
+        <div class="row main-row">
+            <div id="sidebar" class="px-3 sidebar">
+                <div class="sidebar-header">
+                    <h5>Change Feed</h5>
+                    <hr>
+                </div>
+                <ul class="nav flex-column my-2">
+                    <li class="nav-item py-2">
+                        <% if (sport.toUpperCase() == "NBA") { %>
+                        <div class="nav-link current py-2"><span class="league-name">NBA</span>
+                            <span class="float-right"><i class="fas nba fa-chevron-right" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="team-list nba-team-list current">
+                        <% }else{ %>
+                        <div class="nav-link py-2"><span class="league-name">NBA</span>
+                            <span class="float-right"><i class="fas nba fa-chevron-down" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="team-list nba-team-list">
+                        <% } %>
+                            <ul class="nav flex-column">
+                                <a href="/nba/feed/a/nba"><li class="league-list-item pl-4">League</li></a>
+                                <a href="/nba/search"><li class="league-list-item pl-4">Search for a team</li></a>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item py-2">
+                        <% if (sport.toUpperCase() == "NFL") { %>
+                            <div class="nav-link current py-2"><span class="league-name">NFL</span>
+                                <span class="float-right"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="team-list nfl-team-list current">
+                        <% }else{ %>
+                            <div class="nav-link py-2"><span class="league-name">NFL</span>
+                                <span class="float-right"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="team-list nfl-team-list">
+                        <% } %>
+                            <ul class="nav flex-column">
+                                <a href="/nfl/feed/a/nfl"><li class="league-list-item pl-4">League</li></a>
+                                <a href="/nfl/search"><li class="league-list-item pl-4">Search for a team</li></a>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item py-2">
+                        <% if (sport.toUpperCase() == "NHL") { %>
+                            <div class="nav-link current py-2"><span class="league-name">NHL</span>
+                                <span class="float-right"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="team-list nhl-team-list current">
+                        <% }else{ %>
+                            <div class="nav-link py-2"><span class="league-name">NHL</span>
+                                <span class="float-right"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="team-list nhl-team-list">
+                        <% } %>
+                            <ul class="nav flex-column">
+                                <li class="league-list-item pl-4">League</li>
+                                <a href="/nhl/search"><li class="league-list-item pl-4">Search for a team</li></a>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item py-2">
+                        <% if (sport.toUpperCase() == "MLB") { %>
+                            <div class="nav-link current py-2"><span class="league-name">MLB</span>
+                                <span class="float-right"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="team-list mlb-team-list current">
+                        <% }else{ %>
+                            <div class="nav-link py-2"><span class="league-name">MLB</span>
+                                <span class="float-right"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="team-list mlb-team-list">
+                        <% } %>         
+                            <ul class="nav flex-column">
+                                <li class="league-list-item pl-4">League</li>
+                                <a href="/mlb/search"><li class="league-list-item pl-4">Search for a team</li></a>
+                            </ul>
+                        </div>        
+                    </li>
+                </ul>
+            </div>
+            <div id="contentSection" class="contents container-fluid col-10 mt-4">
+                <div id="header-row" class="row mt-5 mx-3 justify-content-start align-items-center">
+                    <div class="team-name"><h5><strong><%= sport.toLowerCase() %>  /</strong></h5></div>
+                    <div class="team-name"><h3><em><%= team.toLowerCase() %></em></h3></div>                
+                </div>
+                <div id="result-section" class="mt-3 px-5 pt-3">
+                    <div id="filter-row" class="row mb-4 justify-content-between align-items-center">
+                        <div class="filters">
+                            <a class="btn set btn-light filter-btn btn-md mr-3">Videos</a>
+                            <a href="/<%= sport %>/feed/a/<%= team %>" class="btn btn-light filter-btn btn-md mr-3">Articles</a>
+
+                        </div>
+                        <div id="follow-section" class="mr-4">
+                            <% if (currentUser && currentUser.followed.length > 0) { %>
+                                <% for (var i = 0; i < currentUser.followed.length; i++) { %>
+                                    <% if (currentUser.followed[i].teamname.toLowerCase() == team.toLowerCase()){ %>
+                                        <a id="follow" href="/<%=sport%>/<%=team%>/unfollow?_method=PUT" class="btn followed px-3" aria-label="<%= sport %>-<%= team %>"><i class="fas fa-check mr-2"></i>Followed</a>
+                                        <% break; %>
+                                    <% }else if (i == currentUser.followed.length - 1) { %>
+                                        <a id="follow" href="/<%=sport%>/<%=team%>/follow?_method=PUT" class="btn px-3" aria-label="<%= sport %>-<%= team %>">Follow</a>
+                                    <% } %>
+                                <% } %>
+                            <% }else{ %>
+                                <a id="follow" href="/<%=sport%>/<%=team%>/follow?_method=PUT" class="btn px-3" aria-label="<%= sport %>-<%= team %>">Follow</a>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% for (var k = 0; k < results.length; k++){ %>
+                        <div id="resultrow<%= k %>" class="result-row container-fluid">
+                            <div class="row result-header align-items-center w-100 mb-3">
+                                <img class="brand" src="<%= results[k].logo %>" alt="">
+                                <h4><em><%= results[k].name %></em></h4>
+                            </div>
+                            <% for (var i = 0; i < results[k].content.length; i+=4) { %>
+                                <% if (results[k].content.length - i <= 4) { %>
+                                <div class="row resultrow<%= k %> row-result-contents mt-3 pb-5 justify-content-start hide">
+                                <% }else{ %>
+                                <div class="row resultrow<%= k %> row-result-contents mt-3 justify-content-between hide">
+                                <% } %>
+                                    <% for (var j = i; j < i+4 && j < results[k].content.length; j++) { %>
+                                        <div class="col-3">
+                                            <a href="http://youtube.com/watch?v=<%= results[k].content[j].id.videoId%>">
+                                            <div class="card">
+                                                <div class="img-container">
+                                                    <img src="<%= results[k].content[j].snippet.thumbnails.medium.url %>" class="card-img-top" alt="">
+                                                    <a href="http://youtube.com/watch?v=<%= results[k].content[j].id.videoId%>" class="btn play-btn"><i class="far fa-play-circle"></i></a>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><a href="http://youtube.com/watch?v=<%= results[k].content[j].id.videoId%>"><%= results[k].content[j].snippet.title.split("&#39;").join("'") %>...</a></h5>
+                                                </div>
+                                            </div></a>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                            <div id="show-resultrow<%= k %>" class="row show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
+                            <hr>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="/js/sidebar.js" type="text/javascript"></script>
+    <script src="/js/loadmore.js" type="text/javascript"></script>
+
+<%- include("../../partials/footer") %>

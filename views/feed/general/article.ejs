@@ -39,7 +39,7 @@
                             <div class="team-list nfl-team-list">
                         <% } %>
                             <ul class="nav flex-column">
-                                <li class="league-list-item pl-4">League</li>
+                                <a href="/nfl/feed/a/nfl"><li class="league-list-item pl-4">League</li></a>
                                 <a href="/nfl/search"><li class="league-list-item pl-4">Search for a team</li></a>
                             </ul>
                         </div>
@@ -90,7 +90,7 @@
                 <div id="result-section" class="mt-3 px-5 pt-3">
                     <div id="filter-row" class="row mb-4 justify-content-between align-items-center">
                         <div class="filters">
-                            <a href="/nba/feed/v/<%= team %>"class="btn btn-light filter-btn btn-md mr-3">Videos</a>
+                            <a href="/<%= sport %>/feed/v/<%= team %>"class="btn btn-light filter-btn btn-md mr-3">Videos</a>
                             <a class="btn btn-light filter-btn set btn-md">Articles</a>
                         </div>
                         <div id="follow-section" class="mr-4">
@@ -108,102 +108,40 @@
                             <% } %>
                         </div>
                     </div>
-                    <div id="brResults" class="container-fluid">
-                        <div class="row result-header align-items-center w-100 mb-3">
-                            <img class="brand" src="https://bleacherreport.com/img/favicon/appleTouchIcon.png" alt="">
-                            <h4><em>Bleacher Report</em></h4>
-                        </div>
-                        <% for (var i = 0; i < brArticles.length; i+=4) { %>
-                            <% if (brArticles.length - i <= 4) { %>
-                            <div class="row br row-result-contents mt-3 mb-5 justify-content-start hide">
-                            <% }else{ %>
-                            <div class="row br row-result-contents mt-3 justify-content-between hide">
-                            <% } %>
-                                <% for (var j = i; j < i+4 && j < brArticles.length; j++) { %>
-                                    <div class="col-3">
-                                        <a href="<%= brArticles[j].url %>">
-                                        <div class="card">
-                                            <img src="<%= brArticles[j].urlToImage %>" class="card-img-top" alt="">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><a href="<%= brArticles[j].url %>"><%= brArticles[j].title.substring(0,75) %>...</a></h5>
-                                                <% if (brArticles[j].author == null || brArticles[j].author == ""){ %>
-                                                    <p class="card-text">Unknown / bleacherreport.com</p>
-                                                <% }else{ %>
-                                                    <p class="card-text"><%= brArticles[j].author%> / bleacherreport.com</p>
-                                                <% } %>
-                                            </div>
-                                        </div></a>
-                                    </div>
-                                <% } %>
+                    <% for (var k = 0; k < results.length; k++){ %>
+                        <div id="resultrow<%= k %>" class="result-row container-fluid">
+                            <div class="row result-header align-items-center w-100 mb-3">
+                                <img class="brand" src="<%= results[k].logo %>" alt="">
+                                <h4><em><%= results[k].name %></em></h4>
                             </div>
-                        <% } %>
-                        <div class="row br show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
-                    </div>
-                    <hr>
-                    <div id="espnResults" class="container-fluid">
-                        <div class="row result-header align-items-center w-100 mb-3">
-                            <img class="brand" src="https://a.espncdn.com/wireless/mw5/r1/images/bookmark-icons-v2/espn-icon-180x180.png" alt="">
-                            <h4><em>ESPN</em></h4>
-                        </div>
-                        <% for (var i = 0; i < espnArticles.length; i+=4) { %>
-                            <% if (espnArticles.length - i <= 4) { %>
-                            <div class="row espn row-result-contents mt-3 mb-5 justify-content-start hide">
-                            <% }else{ %>
-                            <div class="row espn row-result-contents mt-3 justify-content-between hide">
-                            <% } %>
-                                <% for (var j = i; j < i+4 && j < espnArticles.length; j++) { %>
-                                    <div class="col-3">
-                                        <a href="<%= espnArticles[j].url%>">
-                                        <div class="card">
-                                            <img src="<%= espnArticles[j].urlToImage %>" class="card-img-top" alt="">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><a href="<%= espnArticles[j].url %>"><%= espnArticles[j].title.substring(0,75) %>...</a></h5>
-                                                <% if (espnArticles[j].author == null || espnArticles[j].author == ""){ %>
-                                                    <p class="card-text">Unknown / espn.com</p>
-                                                <% }else{ %>
-                                                    <p class="card-text"><%= espnArticles[j].author%> / espn.com</p>
-                                                <% } %>
-                                            </div>
-                                        </div></a>
-                                    </div>
+                            <% for (var i = 0; i < results[k].content.length; i+=4) { %>
+                                <% if (results[k].content.length - i <= 4) { %>
+                                <div class="row resultrow<%= k %> row-result-contents mt-3 pb-5 justify-content-start hide">
+                                <% }else{ %>
+                                <div class="row resultrow<%= k %> row-result-contents mt-3 justify-content-between hide">
                                 <% } %>
-                            </div>
-                        <% } %>
-                        <div class="row espn show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
-                    </div>
-                    <hr>
-                    <div id="foxResults" class="container-fluid">
-                        <div class="row result-header align-items-center w-100 mb-3">
-                            <img class="brand" src="https://b.fssta.com/sta/images/152x152.png" alt="">
-                            <h4><em>Fox Sports</em></h4>
-                        </div>
-                        <% for (var i = 0; i < foxArticles.length; i+=4) { %>
-                            <% if (foxArticles.length - i <= 4) { %>
-                            <div class="row fox row-result-contents mt-3 mb-5 justify-content-start hide">
-                            <% }else{ %>
-                            <div class="row fox row-result-contents mt-3 justify-content-between hide">
+                                    <% for (var j = i; j < i+4 && j < results[k].content.length; j++) { %>
+                                        <div class="col-3">
+                                            <a href="<%= results[k].content[j].url %>">
+                                            <div class="card">
+                                                <img src="<%= results[k].content[j].urlToImage %>" class="card-img-top" alt="">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><a href="<%= results[k].content[j].url %>"><%= results[k].content[j].title.substring(0,75) %>...</a></h5>
+                                                    <% if (results[k].content[j].author == null || results[k].content[j].author == ""){ %>
+                                                        <p class="card-text">Unknown / <%= results[k].name %></p>
+                                                    <% }else{ %>
+                                                        <p class="card-text"><%=results[k].content[j].author%> / <%= results[k].name %></p>
+                                                    <% } %>
+                                                </div>
+                                            </div></a>
+                                        </div>
+                                    <% } %>
+                                </div>
                             <% } %>
-                                <% for (var j = i; j < i+4 && j < foxArticles.length; j++) { %>
-                                    <div class="col-3">
-                                        <a href="<%= foxArticles[j].url%>">
-                                        <div class="card">
-                                            <img src="<%= foxArticles[j].urlToImage %>" class="card-img-top" alt="">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><a href="<%= foxArticles[j].url %>"><%= foxArticles[j].title.substring(0,75) %>...</a></h5>
-                                                <% if (foxArticles[j].author == null || foxArticles[j].author == ""){ %>
-                                                    <p class="card-text">Unknown / foxsports.com</p>
-                                                <% }else{ %>
-                                                    <p class="card-text"><%= foxArticles[j].author%> / foxsports.com</p>
-                                                <% } %>
-                                            </div>
-                                        </div></a>
-                                    </div>  
-                                <% } %>
-                            </div>
-                        <% } %>
-                        <div class="row fox show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
+                            <div id="show-resultrow<%= k %>" class="row show-more mt-4 justify-content-center py-2"><i class="fas fa-chevron-down"></i></div>
                         <hr>
-                    </div>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
