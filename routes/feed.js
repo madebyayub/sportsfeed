@@ -29,7 +29,10 @@ var channelIDs = {
     nba: "UCWJ2lWNubArHWmf3FIHbfcQ",
     undisputed: "UCLXzq85ijg2LwJWFrz4pkmw",
     br: "UC9-OpMMVoNP5o10_Iyq7Ndw",
-    nfl: "UCDVYQ4Zhbm3S2dlz7P1GBDg"
+    nfl: "UCDVYQ4Zhbm3S2dlz7P1GBDg",
+    nhl: "UCqFMzb-4AUf6WAIbl132QKA",
+    sportsnet: "UCVhibwHk4WKw4leUt6JfRLg",
+    tsn: "UC--i2rV5NCxiEIPefr3l-zQ"
 };
 /*
     Any possible source information goes here, to pass to the view to display
@@ -57,7 +60,23 @@ var espn_info = {
     nfl_info = {
     name: "NFL.com",
     logo: "https://static.www.nfl.com/league/run3dfyjniqxah4ehxfu"
-}
+},
+    nhl_info = {
+        name: "NHL.com",
+        logo: "https://www-league.nhlstatic.com/nhl.com/builds/site-core/d7b71b1f9618bc99b318310b894f5e60a533547c_1588189185/images/iOS/apple-icon-144x144.png"
+},
+    sportsnet_info = {
+        name: "Sportsnet",
+        logo: "https://pbs.twimg.com/profile_images/1137090735390494721/wLhyIvPY_400x400.png"
+},
+    cbc_info = {
+        name: "CBC",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/CBC_Logo_1992-Present.svg/1024px-CBC_Logo_1992-Present.svg.png"
+},
+    tsn_info = {
+        name: "TSN",
+        logo: "https://www.tsn.ca/img/tsn/icons/apple-touch-icon-180x180.png"
+};
 
 
 /*
@@ -151,10 +170,48 @@ router.get("/:sport/feed/:type/:team", async function(req, res){
                 }else{
                     res.redirect("/error");
                 }
+            /*
+                If the sport is NHL:
+                Articles retrieved from - CBC, Bleacher Report, NHL.com
+                Videos retrieved from - TSN, Sportsnet, NHL.com
+            */
             }else if(sport === "nhl"){
-
-            }else if(sport === "mlb"){
-
+                /*
+                    Check if the type param is article
+                */
+               if (req.params.type.toLowerCase() === "a"){
+                    // Request CBC Articles from NEWSAPI
+                    var cbc = await getArticles("cbc-news", "cbc.ca", teamName, newsapiAPIKeys[0]);
+                    var cbc_result = {name: cbc_info.name, logo: cbc_info.logo, content: cbc.articles};
+                    results.push(cbc_result);
+                    // Request Bleacher Report Articles from NEWSAPI
+                    var br = await getArticles("bleacher-report", "bleacherreport.com", teamName, newsapiAPIKeys[1]);
+                    var br_result = {name: bleacher_report_info.name, logo: bleacher_report_info.logo, content: br.articles};
+                    results.push(br_result);
+                    // Request Fox Articles from NEWSAPI
+                    var nhl = await getArticles("nhl-news", "nhl.com", teamName, newsapiAPIKeys[2]);
+                    var nhl_result = {name: nhl_info.name, logo: nhl_info.logo, content: nhl.articles};
+                    results.push(nhl_result);
+                    // Render the general article view, given the sport, team, and list of results params.
+                    res.render("feed/general/article", {sport: req.params.sport, team: req.params.team, 
+                        results: results});
+                }else if (req.params.type.toLowerCase() === "v"){
+                    // Request Bleacher Report videos from Youtube
+                    var tsn = await getVideos(teamName, channelIDs.tsn, "tsn", youtubeAPIKeys[3]);
+                    var tsn_result = {name: tsn_info.name, logo: tsn_info.logo, content: tsn.items};
+                    results.push(tsn_result);
+                    // Request ESPN videos from Youtube
+                    var sportsnet = await getVideos(teamName, channelIDs.sportsnet, "sportsnet", youtubeAPIKeys[0]);
+                    var sportsnet_result = {name: sportsnet_info.name, logo: sportsnet_info.logo, content: sportsnet.items};
+                    results.push(sportsnet_result);
+                    // Request Undisputed videos from Youtube
+                    var nhl = await getVideos(teamName, channelIDs.nhl, "nhl.com", youtubeAPIKeys[1]);
+                    var nhl_result = {name: nhl_info.name, logo: nhl_info.logo, content: nhl.items};                        
+                    results.push(nhl_result);
+                    // Render the general video view, passing the sport, team and list of results params.
+                    res.render("feed/general/video", {sport: req.params.sport, team: req.params.team, 
+                        results:results});
+                }
             }else{
 
             }
@@ -194,7 +251,15 @@ router.get("/user/:type/feed", middleWare.isLoggedIn, async function(req, res){
                 Articles sources - ESPN, Bleacher Report
             */
             if (req.user.followed[i].sport.toLowerCase() === "nba" || req.user.followed[i].sport.toLowerCase() === "nfl"){
-                results = await getArticles("espn, bleacher-report", "espn.com, bleacherreport.com", req.user.followed[i].teamname, newsapiAPIKeys[0]);
+                results = await getArticles("espn, bleacher-report", "espn.com, bleacherreport.com", req.user.followed[i].teamname, newsapiAPIKeys[2]);
+                article.articles = results.articles;
+                follow_feed.push(article)
+            /*
+                If the sport is NHL
+                Articles sources - CBC, Bleacher Report
+            */
+            }else if(req.user.followed[i].sport.toLowerCase() === "nhl"){
+                results = await getArticles("cbc-news, bleacher-report", "cbc.ca, bleacherreport.com", req.user.followed[i].teamname, newsapiAPIKeys[0]);
                 article.articles = results.articles;
                 follow_feed.push(article)
             }
@@ -301,6 +366,12 @@ function containsIn(sport, team){
         }
     }else if(sport.toLowerCase() == "nfl"){
         if(teams.nfl.indexOf(team.toLowerCase()) >= 0){
+            return true;
+        }else{
+            return false;
+        }
+    }else if(sport.toLowerCase() == "nhl"){
+        if(teams.nhl.indexOf(team.toLowerCase()) >= 0){
             return true;
         }else{
             return false;

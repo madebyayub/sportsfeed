@@ -17,5 +17,13 @@ var nfl = [
     "san diego chargers","seattle seahawks","san francisco 49ers","st. louis rams","tamba bay buccaneers",
     "tennessee titans", "washington redskins", "nfl"
 ]
+var nhl = [
+    "anaheim ducks", "arizona coyotes", "calgary flames", "edmonton oilers", "los angeles kings",
+    "san jose sharks", "vancouver canucks", "chicago blackhawks", "colorado avalanche", "dallas stars",
+    "minnesota wild", "nashville predators", "st. louis blues", "winnipeg jets", "boston bruins", "buffalo sabres",
+    "detroid redwings", "florida panthers", "montreal canadiens", "ottawa senators", "tamba bay lightning",
+    "toronto maple leafs", "carolina hurricanes", "columbus blue jackets", "new jersey devils", "new york islanders",
+    "new york rangers", "philadelphia flyers", "pittsburgh penguins", "washington capitals", "nhl"
+]
 
-module.exports = {nba: nba, nfl: nfl};
+module.exports = {nba: nba, nfl: nfl, nhl: nhl};
