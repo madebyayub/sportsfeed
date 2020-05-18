@@ -7,23 +7,22 @@ var express = require("express"),
     User = require("../models/user"),
     middleWare = require("../middleware");
 
-/*
-    Login Routes
-*/
 router.use( function( req, res, next ) {
-    // this middleware will call for each requested
-    // and we checked for the requested query properties
-    // if _method was existed
-    // then we know, clients need to call DELETE request instead
+    /*  This middleware will call for each requested query
+        and check if _method exists.
+        Then we know, clients need to call PUT request instead
+    */
     if ( req.query._method == 'PUT' ) {
-        // change the original METHOD
-        // into DELETE method
+        // Change the original METHOD into a PUT method
         req.method = 'PUT';
-        // and set requested url to /user/12
         req.url = req.path;
     }       
     next(); 
 });
+
+/*
+    Login Routes
+*/
 
 router.get("/login", function(req, res){
     if (req.isAuthenticated()){
@@ -66,7 +65,7 @@ router.post("/register", function(req, res){
 });
 
 /*
-    Follow Routes
+    Follow/Unfollow Routes
 */
 router.put("/:sport/:team/follow", middleWare.isLoggedIn, function(req, res){
     var user = req.user;
