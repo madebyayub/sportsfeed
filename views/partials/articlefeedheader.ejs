@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="/stylesheets/feed/sidebar.css">
         <link rel="stylesheet" href="/stylesheets/feed/content.css">
         <link rel="stylesheet" href="/stylesheets/feed/master.css">
+        <link rel="stylesheet" href="/stylesheets/feed/nav.css">
 
         <title>Sportsfeed</title>
     </head>
@@ -21,11 +22,11 @@
             <span class="navbar-text">
                 <ul class="nav navbar-nav">
                     <% if (!(currentUser)){ %>
-                        <li class="mx-3"><a href="/login">Login</a></li>
-                        <li class="mx-3"><a href="/register">Signup</a></li>    
+                        <li><a class="actions" href="/login">Login</a></li>
+                        <li><a class="actions" href="/register">Signup</a></li>    
                     <% }else{ %>
-                        <li class="mx-3"><a><strong><%= currentUser.username %></strong></a></li>
-                        <li class="mx-3"><a href="/logout">Logout</a></li>
+                        <li><a><strong><%= currentUser.username %></strong></a></li>
+                        <li><a class="actions" href="/logout">Logout</a></li>
                     <% } %>
                 </ul>
             </span>

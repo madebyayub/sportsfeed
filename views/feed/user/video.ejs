@@ -11,12 +11,10 @@
                 <li class="nav-item py-2">
                     <% if (sport.toUpperCase() == "NBA") { %>
                     <div class="nav-link current py-2"><span class="league-name">NBA</span>
-                        <span class="float-right"><i class="fas nba fa-chevron-right" aria-hidden="true"></i></span>
                     </div>
                     <div class="team-list nba-team-list current">
                     <% }else{ %>
                     <div class="nav-link py-2"><span class="league-name">NBA</span>
-                        <span class="float-right"><i class="fas nba fa-chevron-down" aria-hidden="true"></i></span>
                     </div>
                     <div class="team-list nba-team-list">
                     <% } %>
@@ -29,12 +27,10 @@
                 <li class="nav-item py-2">
                     <% if (sport.toUpperCase() == "NFL") { %>
                         <div class="nav-link current py-2"><span class="league-name">NFL</span>
-                            <span class="float-right"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
                         </div>
                         <div class="team-list nfl-team-list current">
                     <% }else{ %>
                         <div class="nav-link py-2"><span class="league-name">NFL</span>
-                            <span class="float-right"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
                         </div>
                         <div class="team-list nfl-team-list">
                     <% } %>
@@ -47,12 +43,10 @@
                 <li class="nav-item py-2">
                     <% if (sport.toUpperCase() == "NHL") { %>
                         <div class="nav-link current py-2"><span class="league-name">NHL</span>
-                            <span class="float-right"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
                         </div>
                         <div class="team-list nhl-team-list current">
                     <% }else{ %>
                         <div class="nav-link py-2"><span class="league-name">NHL</span>
-                            <span class="float-right"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
                         </div>
                         <div class="team-list nhl-team-list">
                     <% } %>
@@ -61,24 +55,6 @@
                             <a href="/nhl/search"><li class="league-list-item pl-4">Search for a team</li></a>
                         </ul>
                     </div>
-                </li>
-                <li class="nav-item py-2">
-                    <% if (sport.toUpperCase() == "MLB") { %>
-                        <div class="nav-link current py-2"><span class="league-name">MLB</span>
-                            <span class="float-right"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="team-list mlb-team-list current">
-                    <% }else{ %>
-                        <div class="nav-link py-2"><span class="league-name">MLB</span>
-                            <span class="float-right"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="team-list mlb-team-list">
-                    <% } %>         
-                        <ul class="nav flex-column">
-                            <li class="league-list-item pl-4">League</li>
-                            <a href="/mlb/search"><li class="league-list-item pl-4">Search for a team</li></a>
-                        </ul>
-                    </div>        
                 </li>
             </ul>
         </div>

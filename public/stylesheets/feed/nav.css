@@ -1,0 +1,9 @@
+.navbar .navbar-text a {
+  padding: 15px;
+  border-radius: 25%;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+.navbar .navbar-text a.actions:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+}

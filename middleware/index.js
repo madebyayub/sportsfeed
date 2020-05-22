@@ -1,10 +1,11 @@
 var middleWare = {};
 
-middleWare.isLoggedIn = function(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
+middleWare.isLoggedIn = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  req.flash("error", "You need to be logged in to do that!");
+  res.redirect("/login");
 };
 
 module.exports = middleWare;
